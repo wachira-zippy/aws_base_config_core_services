@@ -2,7 +2,8 @@
 
 ### What is this repository for? ###
 
-* This repository contains the Terraform code for AWS_Account_Base_Configuration (Clients)
+* This repository contains the Terraform code for completing a base configuration of AWS Security and Compliance Services for an AWS Account.
+* This configuration is best suited for a client environment. 
 
 ### Contribution guidelines ###
 
@@ -14,20 +15,10 @@ AWS Identity and Access Management (IAM)
 Amazon Simple Notification Service (SNS)
 AWS Budget Alerts
 AWS Backup
-AWS Alternative Contacts
-AWS Certificate Manager
-Amazon Virtual Private Cloud (VPC)
 Amazon Simple Storage Services (S3)
 Amazon CloudWatch
 AWS Config
 Amazon CloudTrail
 Amazon GuardDuty
-AWS Elastic Cloud Compute (EC2)
 
-### Who do I talk to if any questions or issues? ###
-
-* For more information on this repo contact Charlton Daniels (charlton@overdrive.co.za), Mohamed Ebrahim (mohamed@overdrive.co.za), Christopher Voges (christopher@overdrive.co.za)
-
-
-### Please refer to runbook for steps to follow to complete the entire cycle of applying the base configuration ###
 
