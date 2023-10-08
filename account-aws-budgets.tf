@@ -1,3 +1,5 @@
+//set up budget for actual and forecasted costs at 50%, 100% and 150% usage
+
 resource "aws_budgets_budget" "budgets" {
   name         = var.budget_name
   budget_type  = var.budget_type

@@ -1,3 +1,4 @@
+//password policy for the account 
 resource "aws_iam_account_password_policy" "password_policy" {
   allow_users_to_change_password = var.allow_users_to_change_password
   hard_expiry                    = var.hard_expiry

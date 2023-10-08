@@ -7,6 +7,7 @@ resource "aws_s3_bucket" "aws_config" {
       }
 }
 
+//allow config to send logs to the bucket
 resource "aws_s3_bucket_policy" "aws_config" {
 bucket = aws_s3_bucket.aws_config.id
 depends_on = [aws_s3_bucket.aws_config]
@@ -77,19 +78,20 @@ resource "aws_s3_bucket_lifecycle_configuration" "aws_config" {
   rule {
     id = "Expire in 731 Days"
     expiration {
-      days = 731
+      days = 365
     }
 
     noncurrent_version_expiration {
-      noncurrent_days = 731
+      noncurrent_days = 365
     }
 
     status = "Enabled"
   }
 }
 
+//load module with base for AWS Config
 module "config" {
-  source                        = "./aws-so-config"
+  source                        = "./aws_config"
   is_enabled                    = true
   config_name                   = var.config_name
   config_logs_bucket            = aws_s3_bucket.aws_config.bucket

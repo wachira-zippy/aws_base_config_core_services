@@ -1,3 +1,5 @@
+//enable and configure cloudtrail
+
 data "aws_iam_policy_document" "kms" {
   version = "2012-10-17"
 
@@ -227,6 +229,8 @@ module "log_group" {
   retention_in_days = 365
   kms_key_id        = module.kms_key.key_arn
 }
+
+//loads module for AWS CloudTrail
 
 module "cloudtrail" {
   source                        = "./aws-cloudtrail"

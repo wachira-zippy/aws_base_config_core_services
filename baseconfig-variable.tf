@@ -1,13 +1,10 @@
-variable "silicon_names" {
+// add names of all users who need to be created
+variable "abc_admins" {  
   type    = list(string)
-  default = ["charlton@overdrive.co.za", "chris@overdrive.co.za", "romano@overdrive.co.za"]
+  default = ["x@abc.com", "y@abc.com",]
 }
 
-variable "client_names" {
-  type    = list(string)
-  default = ["jacques@overdrive.co.za", "mohamed@overdrive.co.za", "brian@overdrive.co.za", ]
-}
-
+//variables for the account password policy
 variable "hard_expiry" {
   type    = string
   default = false

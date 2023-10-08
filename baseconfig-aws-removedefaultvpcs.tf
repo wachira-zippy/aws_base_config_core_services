@@ -1,3 +1,5 @@
+//removes all default VPCs across all regions
+
 provider "awsutils" {
   region = "us-east-1"
 }

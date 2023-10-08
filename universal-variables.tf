@@ -1,35 +1,29 @@
-variable "aws_region" {
-  default = "eu-west-1"
+variable "aws_region" { //change region 
+  default = ""
 }
 
-variable "client_name" {
-  default = "silicon"
-}
-
-variable "terraform_state" {
-  default = "terraform-state"
-}
-
-variable "sns_subscriber_email" {
-  default = "charlton@overdrive.co.za"
+variable "sns_subscriber_email" { // email endpoint for SNS notifications. For organizations, this should preferable be a distribution group.
+  default = "abc@companyx.com"
 }
 
 variable "config_name" {
-  default = "silicon-overdrive-staging-config"
+  default = ""
 }
 
-variable "config_bucket" {
-  default = "silicon-overdrive-staging-config-log"
+//s3 logs bucket names for security services. Replace bucket names as per your standard naming convention. 
+
+variable "config_bucket" { // needed
+  default = "companyname-environment-bucketname" //e.g. abc-prod-config-logs-bucket
 }
 
 variable "cloudtrail_bucket" {
-  default = "silicon-overdrive-staging-cloudtrail-log"
+  default = "companyname-environment-bucketname"
 }
 
 variable "cloudtrail_loggroup" {
-  default = "silicon-overdrive-staging-cloudtrail-log"
+  default = "companyname-environment-cloudtrail-log"
 }
 
 variable "guard_duty_bucket" {
-  default = "silicon-overdrive-staging-guard-duty-logs"
+  default = "companyname-environment-bucketname"
 }

@@ -1,3 +1,5 @@
+//enable default encryption for all EBS volumes
+
 data "aws_kms_key" "backup" {
   key_id = "alias/aws/backup"
 }

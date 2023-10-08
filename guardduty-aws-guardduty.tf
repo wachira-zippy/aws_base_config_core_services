@@ -1,3 +1,5 @@
+
+//this script enables the guardduty detector
 resource "aws_guardduty_detector" "detector" {
   enable = true
 }
@@ -5,7 +7,7 @@ resource "aws_guardduty_detector" "detector" {
 resource "aws_guardduty_publishing_destination" "guard_duty_logs" {
   detector_id     = aws_guardduty_detector.detector.id
   destination_arn = aws_s3_bucket.guard_duty_s3_bucket.arn
-  kms_key_arn     = aws_kms_key.guard_duty_key.arn
+  kms_key_arn     = aws_kms_key.guard_duty_key.arn //encrypt findings 
 
   depends_on = [
     aws_s3_bucket_policy.guard_duty_bucket_policy,
@@ -13,7 +15,7 @@ resource "aws_guardduty_publishing_destination" "guard_duty_logs" {
 }
 
 resource "aws_s3_bucket" "guard_duty_s3_bucket" {
-  bucket = var.guard_duty_bucket
+  bucket = var.guard_duty_bucket // bucket name picked from the universal variables file.
   
   tags = {
     Name        = var.guard_duty_bucket
@@ -71,6 +73,7 @@ resource "aws_s3_bucket_policy" "guard_duty_bucket_policy" {
   policy = data.aws_iam_policy_document.guard_duty_bucket_pol.json
 }
 
+//can optionally set up an alias for the key to make it easier to locate. The alias would also come in handy if you need to conform to a naming convention
 resource "aws_kms_key" "guard_duty_key" {
   description             = "Guard Duty Key"
   deletion_window_in_days = 7
