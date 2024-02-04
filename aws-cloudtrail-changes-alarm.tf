@@ -9,7 +9,7 @@ variable "cloudtrail_log_group_name" {
 resource "aws_cloudwatch_log_metric_filter" "cloudtrail_changes" {
   name           = "CloudTrailChanges"
   pattern        = "{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }"
-  log_group_name = var.cloudtrail_loggroup
+  log_group_name = "${var.company_name}-${var.environment}-cloudtrail-logs"
 
   metric_transformation {
     name      = "CloudTrailChanges"

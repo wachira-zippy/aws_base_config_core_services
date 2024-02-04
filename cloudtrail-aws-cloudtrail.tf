@@ -96,11 +96,11 @@ module "kms_key" {
 }
 
 resource "aws_s3_bucket" "aws_cloudtrail" {
-  bucket        = var.cloudtrail_bucket
+  bucket        = "${company_name}-${environment}-cloudtrail-bucket"
   force_destroy = true
 
   tags = {
-    Name        = var.cloudtrail_bucket
+    Name        = "${company_name}-${environment}-cloudtrail-bucket"
       }
 }
 
@@ -136,13 +136,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "aws_cloudtrail" {
   depends_on = [aws_s3_bucket.aws_cloudtrail]
 
   rule {
-    id = "Expire in 731 Days"
+    id = "Expire in ${var.cloudtrail_lifecycle_bucket} Days"
     expiration {
-      days = 731
+      days = var.cloudtrail_lifecycle_bucket
     }
 
     noncurrent_version_expiration {
-      noncurrent_days = 731
+      noncurrent_days = var.cloudtrail_lifecycle_bucket
     }
 
     status = "Enabled"
@@ -164,7 +164,7 @@ policy = <<POLICY
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:GetBucketAcl",
-            "Resource": "arn:aws:s3:::${var.cloudtrail_bucket}"
+            "Resource": "arn:aws:s3:::"${company_name}-${environment}-cloudtrail-bucket"
         },
         {
             "Sid": "AWSCloudTrailWrite",
@@ -173,7 +173,7 @@ policy = <<POLICY
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::${var.cloudtrail_bucket}/cloudtrail/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
+            "Resource": "arn:aws:s3:::"${company_name}-${environment}-cloudtrail-bucket"/cloudtrail/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
             "Condition": {
                 "StringEquals": {
                     "s3:x-amz-acl": "bucket-owner-full-control"
@@ -226,7 +226,7 @@ resource "aws_iam_role" "cloudwatch_role" {
 module "log_group" {
   source            = "./aws-cloudwatch-loggroup"
   name              = var.cloudtrail_loggroup
-  retention_in_days = 365
+  retention_in_days = var.kms_key_deletion_window
   kms_key_id        = module.kms_key.key_arn
 }
 

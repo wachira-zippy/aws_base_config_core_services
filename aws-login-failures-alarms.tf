@@ -19,7 +19,7 @@ resource "aws_cloudwatch_metric_alarm" "login_failures_cloudtrail_changes" {
 resource "aws_cloudwatch_log_metric_filter" "login_failure" {
   name           = "ConsoleSigninFailures"
   pattern        = "{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failed authentication\") }"
-  log_group_name = var.cloudtrail_loggroup
+  log_group_name = "${var.company_name}-${var.environment}-cloudtrail-logs"
 
   metric_transformation {
     name      = "ConsoleSigninFailures"
@@ -51,7 +51,7 @@ resource "aws_cloudwatch_metric_alarm" "login_failure" {
 resource "aws_cloudwatch_log_metric_filter" "unauthorized_apicalls_alarm" {
   name           = "UnauthorizedAttemptCount"
   pattern        = "{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }"
-  log_group_name = var.cloudtrail_loggroup
+  log_group_name = "${var.company_name}-${var.environment}-cloudtrail-logs"
 
   metric_transformation {
     name      = "UnauthorizedAttemptCount"
@@ -83,7 +83,7 @@ resource "aws_cloudwatch_metric_alarm" "unauthorized_apicalls_alarm" {
 resource "aws_cloudwatch_log_metric_filter" "root_usage_alarm" {
   name           = "RootUsage"
   pattern        = "{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }"
-  log_group_name = var.cloudtrail_loggroup
+  log_group_name = "${var.company_name}-${var.environment}-cloudtrail-logs"
 
   metric_transformation {
     name      = "CloudTrailChanges"

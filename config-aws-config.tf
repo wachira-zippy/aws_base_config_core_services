@@ -1,9 +1,9 @@
 resource "aws_s3_bucket" "aws_config" {
-  bucket        = var.config_bucket
+  bucket        = "${company_name}-${environment}-config-bucket"
   force_destroy = true
 
   tags = {
-    Name        = var.config_bucket
+    Name        = "${company_name}-${environment}-config-bucket"
       }
 }
 
@@ -23,7 +23,7 @@ depends_on = [aws_s3_bucket.aws_config]
               "Service": "config.amazonaws.com"
             },
             "Action": "s3:GetBucketAcl",
-            "Resource": "arn:aws:s3:::${var.config_bucket}"
+            "Resource": "arn:aws:s3:::"${company_name}-${environment}-config-bucket""
         },
         {
             "Sid": "AWSCloudTrailWrite",
@@ -32,7 +32,7 @@ depends_on = [aws_s3_bucket.aws_config]
               "Service": "config.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::${var.config_bucket}/config/AWSLogs/${data.aws_caller_identity.current.account_id}/Config/*",
+            "Resource": "arn:aws:s3:::"${company_name}-${environment}-config-bucket"/config/AWSLogs/${data.aws_caller_identity.current.account_id}/Config/*",
             "Condition": {
                 "StringEquals": {
                     "s3:x-amz-acl": "bucket-owner-full-control"
@@ -76,13 +76,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "aws_config" {
   depends_on = [aws_s3_bucket.aws_config]
 
   rule {
-    id = "Expire in 731 Days"
+    id = "Expire in ${var.config_lifecycle_bucket} Days"
     expiration {
-      days = 365
+      days = var.config_lifecycle_bucket
     }
 
     noncurrent_version_expiration {
-      noncurrent_days = 365
+      noncurrent_days = var.config_lifecycle_bucket
     }
 
     status = "Enabled"

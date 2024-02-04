@@ -1,6 +1,6 @@
 //budget variables
 
-variable "budget_name" { default = "companyname-environment_budget_report" }
+variable "budget_name" { default = "${company_name}-${environment}_budget_report" }
 variable "subscriber_email_addresses" { default = [""] }
 variable "escalations_email_addresses" { default = [""] }
 variable "monitor_email_addresses" { default = [""] }

@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_log_metric_filter" "iam_changes" {
   name           = "IAMChanges"
   pattern        = "{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}"
-  log_group_name = var.cloudtrail_loggroup
+  log_group_name = "${var.company_name}-${var.environment}-cloudtrail-logs"
 
   metric_transformation {
     name      = "IAMChanges"

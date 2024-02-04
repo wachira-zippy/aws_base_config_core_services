@@ -1,13 +1,13 @@
 resource "aws_backup_vault" "backup_vault" {
-  name        = "companyname-environment_backup_vault"
+  name        = "${company_name}-${environment}_backup_vault"
   kms_key_arn = data.aws_kms_key.backup.arn
   tags = {
-    Name = "companyname-environment-backup-vault"
+    Name = "${company_name}-${environment}-backup-vault"
   }
 }
 
 resource "aws_backup_plan" "daily_backup_plan" {
-  name = "companyname-environment_daily_backup_plan"
+  name = "${company_name}-${environment}_daily_backup_plan"
 
   rule {
     rule_name                = "daily_backup_rule"
@@ -18,7 +18,7 @@ resource "aws_backup_plan" "daily_backup_plan" {
     enable_continuous_backup = false
 
     recovery_point_tags = {
-      Name = "companyname-environment_backups"
+      Name = "${company_name}-${environment}_backups"
     }
 
     lifecycle {
@@ -30,7 +30,7 @@ resource "aws_backup_plan" "daily_backup_plan" {
 
 resource "aws_backup_selection" "daily_backups" {
   iam_role_arn = aws_iam_role.backup.arn
-  name         = "companyname-environment_backups"
+  name         = "${company_name}-${environment}_backups"
   plan_id      = aws_backup_plan.daily_backup_plan.id
 
   selection_tag {
@@ -41,7 +41,7 @@ resource "aws_backup_selection" "daily_backups" {
 }
 
 resource "aws_backup_plan" "weekly_backup_plan" {
-  name = "companyname-environment_weekly_backup_plan"
+  name = "${company_name}-${environment}_weekly_backup_plan"
 
   rule {
     rule_name                = "weekly_backup_rule"
@@ -52,7 +52,7 @@ resource "aws_backup_plan" "weekly_backup_plan" {
     enable_continuous_backup = false
 
     recovery_point_tags = {
-      Name = "companyname-environment_backups"
+      Name = "${company_name}-${environment}_backups"
     }
 
     lifecycle {
@@ -64,7 +64,7 @@ resource "aws_backup_plan" "weekly_backup_plan" {
 
 resource "aws_backup_selection" "weekly_backups" {
   iam_role_arn = aws_iam_role.backup.arn
-  name         = "companyname-environment_backups"
+  name         = "${company_name}-${environment}_backups"
   plan_id      = aws_backup_plan.weekly_backup_plan.id
 
   selection_tag {
@@ -75,7 +75,7 @@ resource "aws_backup_selection" "weekly_backups" {
 }
 
 resource "aws_backup_plan" "monthly_backup_plan" {
-  name = "companyname-environment_monthly_backup_plan"
+  name = "${company_name}-${environment}_monthly_backup_plan"
 
   rule {
     rule_name                = "monthly_backup_rule"
@@ -86,7 +86,7 @@ resource "aws_backup_plan" "monthly_backup_plan" {
     enable_continuous_backup = false
 
     recovery_point_tags = {
-      Name = "companyname-environment_backups"
+      Name = "${company_name}-${environment}_backups"
     }
 
     lifecycle {
@@ -98,7 +98,7 @@ resource "aws_backup_plan" "monthly_backup_plan" {
 
 resource "aws_backup_selection" "monthly_backups" {
   iam_role_arn = aws_iam_role.backup.arn
-  name         = "companyname-environment_backups"
+  name         = "${company_name}-${environment}_backups"
   plan_id      = aws_backup_plan.monthly_backup_plan.id
 
   selection_tag {

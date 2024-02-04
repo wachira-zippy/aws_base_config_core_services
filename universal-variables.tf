@@ -1,29 +1,24 @@
-variable "aws_region" { //change region 
-  default = ""
-}
 
-variable "sns_subscriber_email" { // email endpoint for SNS notifications. For organizations, this should preferable be a distribution group.
-  default = "abc@companyx.com"
-}
+#############################################global variables####################################################
 
-variable "config_name" {
-  default = ""
-}
+variable "aws_region" { default = ""}  //change region 
+variable "sns_subscriber_email" { default = "abc@companyx.com"} // email endpoint for SNS notifications. For organizations, this should preferable be a distribution group.
+variable "company_name" { default = "companyname"}   //add the company name/alias
+variable "environment" { default = "environment" } //add the environment e.g. prod, uat,dev
 
-//s3 logs bucket names for security services. Replace bucket names as per your standard naming convention. 
+#############################################S3 log buckets lifecycle buckets #############################################
 
-variable "config_bucket" { // needed
-  default = "companyname-environment-bucketname" //e.g. abc-prod-config-logs-bucket
-}
+variable "guard_duty_lifecycle_bucket" {default = "90"}
+variable "config_lifecycle_bucket" {default = "90"}
+variable "cloudtrail_lifecycle_bucket" {default = "90"}
+variable "terraform_lifecycle_bucket" {default = "90"}
+variable "vpc_flow_logs_lifecycle_bucket" {default = "90"}
+variable "cloudfront_logs_lifecycle_bucket" {default = "90"}
+variable "elb_logs_lifecycle_bucket" {default = "90"}
+variable "waf_logs_lifecycle_bucket" {default = "90"}
 
-variable "cloudtrail_bucket" {
-  default = "companyname-environment-bucketname"
-}
+#############################################Service Varibles#############################################
 
-variable "cloudtrail_loggroup" {
-  default = "companyname-environment-cloudtrail-log"
-}
+variable "kms_key_deletion_window" {default = "7"}
+variable "config_name" { default = "${company_name}-${environment}-config"}
 
-variable "guard_duty_bucket" {
-  default = "companyname-environment-bucketname"
-}

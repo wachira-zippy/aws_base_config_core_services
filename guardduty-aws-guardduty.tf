@@ -2,6 +2,29 @@
 //this script enables the guardduty detector
 resource "aws_guardduty_detector" "detector" {
   enable = true
+
+  datasources {
+      
+      s3_logs {
+        enable = true
+      }
+
+ kubernetes {
+       audit_logs {
+         enable = true
+       }
+
+      }
+
+malware_protection {
+      scan_ec2_instance_with_findings {
+        ebs_volumes {
+          enable = true
+        }
+      }
+    }
+}
+
 }
 
 resource "aws_guardduty_publishing_destination" "guard_duty_logs" {
@@ -15,10 +38,10 @@ resource "aws_guardduty_publishing_destination" "guard_duty_logs" {
 }
 
 resource "aws_s3_bucket" "guard_duty_s3_bucket" {
-  bucket = var.guard_duty_bucket // bucket name picked from the universal variables file.
+  bucket =  "${company_name}-${environment}-guardduty-bucket"
   
   tags = {
-    Name        = var.guard_duty_bucket
+    Name        = "${company_name}-${environment}-guardduty-bucket"
       }
 }
 
@@ -55,13 +78,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "guard_duty_s3_bucket" {
   depends_on = [aws_s3_bucket.guard_duty_s3_bucket]
 
   rule {
-    id = "Expire in 731 Days"
+    id = "Expire in ${var.guard_duty_lifecycle_bucket} Days"
     expiration {
-      days = 731
+      days = var.guard_duty_lifecycle_bucket
     }
 
     noncurrent_version_expiration {
-      noncurrent_days = 731
+      noncurrent_days = var.guard_duty_lifecycle_bucket
     }
 
     status = "Enabled"
@@ -76,7 +99,7 @@ resource "aws_s3_bucket_policy" "guard_duty_bucket_policy" {
 //can optionally set up an alias for the key to make it easier to locate. The alias would also come in handy if you need to conform to a naming convention
 resource "aws_kms_key" "guard_duty_key" {
   description             = "Guard Duty Key"
-  deletion_window_in_days = 7
+  deletion_window_in_days = var.kms_key_deletion_window
   policy                  = data.aws_iam_policy_document.kms_guard_duty_policy.json
 }
 
